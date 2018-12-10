@@ -17,6 +17,9 @@ defmodule DravidiumSimulatorWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/wallets", PageController, :wallets
+    get "/transactions", PageController, :transactions
+    get "/mining", PageController, :mining
   end
 
   # Other scopes may use custom stacks.

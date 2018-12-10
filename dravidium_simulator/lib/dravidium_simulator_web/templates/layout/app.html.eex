@@ -9,15 +9,18 @@
 
     <title>Hello DravidiumSimulator!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+    <!-- https://developers.google.com/chart/interactive/docs/quick_start -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Chartkick -->
+    <script type="text/javascript" src="https://unpkg.com/chartkick@2.3.2/dist/chartkick.js"></script>
   </head>
 
   <body>
     <div class="container">
       <header class="header">
         <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
+          
         </nav>
         <span class="logo"></span>
       </header>
