@@ -1,17 +1,38 @@
-<a href="<%= page_path(@conn, :index)%>">Index</a>
-
-<div class="row">
-  <h1>Number of Bitcoins Mined by User</h1>
-  <div class="col-lg-12">
-    <h2>Miner vs Number of Bitcoins</h2>
-    <%= raw Chartkick.column_chart @num_coins_data %>
-  </div>
-
-  <h1>Time Taken for Mining</h1>
-  <div class="col-lg-12">
-    <h2>Miner vs Time Taken(in secs)</h2>
-    <%= raw Chartkick.line_chart @time_data %>
-  </div>
-
-  
+<div id="header-wrapper">
+   <div id="header" class="container">
+      <div id="logo">
+         <span class="icon icon-group"></span>
+         <h1><a>Dravidium</a></h1>
+         <span>Cryptocurrency you can depend upon</span>
+      </div>
+      <div id="triangle-up"></div>
+   </div>
+</div>
+<div id="menu-wrapper">
+   <div id="menu">
+      <ul>
+         <li><a href="<%= page_path(@conn, :index)%>">Homepage</a></li>
+      </ul>
+   </div>
+</div>
+<div id="wrapper">
+   <div id="featured-wrapper">
+      <div class="extra2 container">
+         <div class="row">
+            <h1>Number of Bitcoins Mined by User</h1>
+            <div class="col-lg-12">
+               <h2>Miner vs Number of Bitcoins</h2>
+               <%= raw Chartkick.column_chart @num_coins_data %>
+            </div>
+            <h1>Time Taken for Mining</h1>
+            <div class="col-lg-12">
+               <h2>Miner vs Time Taken(in secs)</h2>
+               <%= raw Chartkick.line_chart @time_data %>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div id="copyright" class="container">
+   <p>&copy; Harkirat Singh Lamba | Srikanth Bhardawaj</p>
 </div>

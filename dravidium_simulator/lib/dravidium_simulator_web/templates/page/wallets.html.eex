@@ -1,37 +1,29 @@
-<a href="<%= page_path(@conn, :index)%>">Index</a>
-
-<div class="row">
-  <h1>Chart's with simple data</h1>
-  <div class="col-lg-6">
-    <h2>Line Chart</h2>
-    <%= raw Chartkick.line_chart @simple_data %>
-  </div>
-  <div class="col-lg-6">
-    <h2>Pie Chart</h2>
-    <%= raw Chartkick.pie_chart @simple_data %>
-  </div>
-  <div class="col-lg-6">
-    <h2>Column Chart</h2>
-    <%= raw Chartkick.column_chart @simple_data %>
-  </div>
-  <div class="col-lg-6">
-    <h2>Bar Chart</h2>
-    <%= raw Chartkick.bar_chart @simple_data %>
-  </div>
-  <div class="col-lg-6">
-    <h2>Area Chart</h2>
-    <%= raw Chartkick.area_chart @simple_data %>
-  </div>
-  <div class="col-lg-6">
-    <h2>Scatter Chart</h2>
-    <%= raw Chartkick.scatter_chart @simple_data %>
-  </div>
-  <div class="col-lg-6">
-    <h2>Geo Chart</h2>
-    <%= raw Chartkick.geo_chart @simple_data %>
-  </div>
-  <div class="col-lg-6">
-    <h2>Geo timeline</h2>
-    <%= raw Chartkick.timeline @timeline_data%>
-  </div>
+<div id="header-wrapper">
+   <div id="header" class="container">
+      <div id="logo">
+         <span class="icon icon-group"></span>
+         <h1><a>Dravidium</a></h1>
+         <span>Cryptocurrency you can depend upon</span>
+      </div>
+      <div id="triangle-up"></div>
+   </div>
+</div>
+<div id="menu-wrapper">
+   <div id="menu">
+      <ul>
+         <li><a href="<%= page_path(@conn, :index)%>">Homepage</a></li>
+      </ul>
+   </div>
+</div>
+<div id="wrapper">
+   <div id="featured-wrapper">
+      <div class="extra2 container">
+         <div class="row">
+            Here
+         </div>
+      </div>
+   </div>
+</div>
+<div id="copyright" class="container">
+   <p>&copy; Harkirat Singh Lamba | Srikanth Bhardawaj</p>
 </div>
