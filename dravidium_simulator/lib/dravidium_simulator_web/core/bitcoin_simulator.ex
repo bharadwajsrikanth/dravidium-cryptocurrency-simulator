@@ -21,7 +21,12 @@ defmodule BitcoinSimulator do
           Repo.insert(mining_entry)
         end
     end
-    :timer.sleep(1000);
+    #:timer.sleep(1000);
+    Enum.each(pending_transactions, fn(transaction) -> 
+      transaction_entry = %DravidiumSimulatorWeb.Transactions{transaction_id: Kernel.inspect(transaction.transaction_id), amount: transaction.amount, recepient: Kernel.inspect(transaction.recepient), sender: Kernel.inspect(transaction.sender)}
+      alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Transactions}
+      Repo.insert(transaction_entry)
+    end)
     forever_mine(miners_list)
   end
 
