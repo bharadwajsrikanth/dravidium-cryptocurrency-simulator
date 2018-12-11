@@ -1,7 +1,7 @@
 defmodule BitcoinSimulator do
 
-  def runner() do
-    Application.put_env(:elixir, :ansi_enabled, true)
+  def start_link() do
+    #Application.put_env(:elixir, :ansi_enabled, true)
     miners_list = create_miners(10)
     forever_mine(miners_list)
   end
@@ -13,19 +13,27 @@ defmodule BitcoinSimulator do
       spawn(__MODULE__, :parallel_mine, [self(), miner, pending_transactions])
     end)
     receive do
-      {_, newBlock, winner_pid} ->
-        IO.inspect winner_pid
+      {_, newBlock, winner_pid, time} ->
+        mining_entry = %DravidiumSimulatorWeb.Mining{miner: Kernel.inspect(winner_pid), block_hash_id: newBlock.my_hash, time_taken: time}
+        alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Mining}
+        found = Repo.get_by(DravidiumSimulatorWeb.Mining, block_hash_id: newBlock.my_hash)
+        unless found do
+          Repo.insert(mining_entry)
+        end
     end
+    :timer.sleep(1000);
     forever_mine(miners_list)
   end
 
   def parallel_mine(parent, miner, pending_transactions) do
-    newBlock = Miner.start_mining(miner, pending_transactions, 4)
-    send parent, {self(), newBlock, miner}
+    {time, newBlock} = :timer.tc(Miner, :start_mining, [miner, pending_transactions, 4])
+    time = time/1000.0
+    #newBlock = Miner.start_mining(miner, pending_transactions, 4)
+    send parent, {self(), newBlock, miner, time}
   end
 
   def create_miners(num_miners) do
-    create_keys_directory()
+    #create_keys_directory()
     Enum.reduce((1..num_miners), [], fn(_, network_miners) ->
       {:ok, pid} = Miner.start_link()
       [pid | network_miners]

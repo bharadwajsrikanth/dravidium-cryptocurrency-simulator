@@ -2,10 +2,6 @@ defmodule DravidiumSimulatorWeb.PageController do
   use DravidiumSimulatorWeb, :controller
 
   def index(conn, _params) do
-    # info = DravidiumSimulatorWeb.Mining.changeset(%DravidiumSimulatorWeb.Mining{}, %{miner: "#PID<0.101.0>", num_of_coins: "10", time_taken: "1.0"})
-    # IO.inspect item
-    # alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Mining}
-    # Repo.insert(info)
     render conn, "index.html"
   end
 
@@ -37,5 +33,5 @@ defmodule DravidiumSimulatorWeb.PageController do
       num_coins_data: Poison.encode!([[1, 20], [2, 15], [3, 25], [4, 14], [5, 22], [6, 18]]),
       time_data: Poison.encode!([[1, 2], [2, 1], [3, 5], [4, 3], [5, 8], [6, 4]])
   end
-  
+
 end

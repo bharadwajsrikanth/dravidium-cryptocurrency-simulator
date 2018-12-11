@@ -7,6 +7,7 @@ defmodule DravidiumSimulatorWeb.Mining do
     field :miner, :string
     field :num_of_coins, :integer
     field :time_taken, :float
+    field :block_hash_id, :string
 
     timestamps()
   end
