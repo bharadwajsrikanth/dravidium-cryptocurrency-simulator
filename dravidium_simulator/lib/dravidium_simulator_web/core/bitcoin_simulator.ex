@@ -4,7 +4,7 @@ defmodule BitcoinSimulator do
 
   def start_link() do
     #Application.put_env(:elixir, :ansi_enabled, true)
-    num_miners = 100
+    num_miners = 20
     miners_list = create_miners(num_miners)
     Enum.each(miners_list, fn(miner) ->
       wallet_entry = %DravidiumSimulatorWeb.Wallet{miner_id: Kernel.inspect(miner), amount: Miner.get_bitcoins(miner)}

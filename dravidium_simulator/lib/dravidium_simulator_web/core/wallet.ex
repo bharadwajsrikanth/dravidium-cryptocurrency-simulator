@@ -8,7 +8,8 @@ defmodule Wallet do
     wallet_id = Util.get_epoch_time()
     Wallet.create_public_private_key_pair(wallet_id)
     {private_key, public_key} = Wallet.parse_keys(wallet_id)
-    %Wallet{amount: 1000, wallet_id: wallet_id, private_key: private_key, public_key: public_key}
+    amt = Enum.random(950..1050)
+    %Wallet{amount: amt, wallet_id: wallet_id, private_key: private_key, public_key: public_key}
   end
 
   def create_public_private_key_pair(pid) do
