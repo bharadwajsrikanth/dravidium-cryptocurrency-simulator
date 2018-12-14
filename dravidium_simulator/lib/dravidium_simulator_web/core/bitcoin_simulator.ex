@@ -1,8 +1,23 @@
 defmodule BitcoinSimulator do
 
+  #@hk_map %{}
+
   def start_link() do
     #Application.put_env(:elixir, :ansi_enabled, true)
-    miners_list = create_miners(10)
+    num_miners = 100
+    miners_list = create_miners(num_miners)
+    Enum.each(miners_list, fn(miner) ->
+      wallet_entry = %DravidiumSimulatorWeb.Wallet{miner_id: Kernel.inspect(miner), amount: Miner.get_bitcoins(miner)}
+      alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Wallet}
+      found = Repo.get_by(DravidiumSimulatorWeb.Wallet, miner_id: Kernel.inspect(miner))
+      unless found do
+        Repo.insert(wallet_entry)
+      end
+    end)
+    #hk_tuple = List.to_tuple(miners_list)
+    #@hk_map = Enum.reduce((1..num_miners), %{}, fn(i, acc) ->
+    #  Map.put(acc, i, Kernel.elem(hk_tuple, i-1))
+    #end)
     forever_mine(miners_list)
   end
 
@@ -19,13 +34,18 @@ defmodule BitcoinSimulator do
         found = Repo.get_by(DravidiumSimulatorWeb.Mining, block_hash_id: newBlock.my_hash)
         unless found do
           Repo.insert(mining_entry)
+          Util.update_wallets(newBlock.transaction_list)
+          Miner.deposit_bitcoins_to_wallet(winner_pid, 10)
         end
     end
     #:timer.sleep(1000);
-    Enum.each(pending_transactions, fn(transaction) -> 
+    Enum.each(pending_transactions, fn(transaction) ->
       transaction_entry = %DravidiumSimulatorWeb.Transactions{transaction_id: Kernel.inspect(transaction.transaction_id), amount: transaction.amount, recepient: Kernel.inspect(transaction.recepient), sender: Kernel.inspect(transaction.sender)}
       alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Transactions}
-      Repo.insert(transaction_entry)
+      found = Repo.get_by(DravidiumSimulatorWeb.Transactions, transaction_id: Kernel.inspect(transaction.transaction_id))
+      unless found do
+        Repo.insert(transaction_entry)
+      end
     end)
     forever_mine(miners_list)
   end
@@ -68,5 +88,9 @@ defmodule BitcoinSimulator do
   def broadcast_block(network_miners, block) do
     Enum.each(network_miners, fn(miner) -> Miner.add_newBlock(miner, block) end)
   end
+
+  #def hk_map() do
+  #  @hk_map
+  #end
 
 end

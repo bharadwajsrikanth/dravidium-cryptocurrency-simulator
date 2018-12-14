@@ -14,7 +14,7 @@ defmodule DravidiumSimulator.Application do
       supervisor(DravidiumSimulatorWeb.Endpoint, []),
       # Start your own worker by calling: DravidiumSimulator.Worker.start_link(arg1, arg2, arg3)
       # worker(DravidiumSimulator.Worker, [arg1, arg2, arg3]),
-      supervisor(BitcoinSimulator, []),
+      #supervisor(BitcoinSimulator, []),
     ]
     #BitcoinSimulator.runner()
     # See https://hexdocs.pm/elixir/Supervisor.html

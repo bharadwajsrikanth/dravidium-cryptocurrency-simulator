@@ -6,13 +6,23 @@ defmodule DravidiumSimulatorWeb.PageController do
   end
 
   def wallets(conn, _params) do
+    import Ecto.Query
+    query_transactions = from(data in DravidiumSimulatorWeb.Wallet, select: %{amount: type(data.amount, :integer), miner_id: type(data.miner_id, :string)})
+    alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Wallet}
+    query_result = Repo.all(query_transactions)
+    my_map = %{}
+    my_tuple = List.to_tuple(query_result)
+    my_len = length(query_result)
+    my_map = Enum.reduce((1..my_len), %{}, fn(i,my_map) ->
+      Map.put(my_map, Kernel.elem(my_tuple, i-1).miner_id, i)
+    end)
+    #IO.inspect my_map
+    transactions_wallet_data = Enum.reduce(query_result, [], fn(line,transactions_wallet_data) ->
+      transactions_wallet_data ++ [[my_map[line.miner_id], line.amount]]
+    end)
     render conn, "wallets.html",
       simple_data: Poison.encode!([[175, 60], [190, 80], [180, 75]]),
-      timeline_data: "[
-                      [\"Washington\", \"1789-04-29\", \"1797-03-03\"],
-                      [\"Adams\", \"1797-03-03\", \"1801-03-03\"],
-                      [\"Jefferson\", \"1801-03-03\", \"1809-03-03\"]
-                    ]"
+      transaction_wallet_data: Poison.encode!(transactions_wallet_data)
   end
 
   def transactions(conn, _params) do
@@ -20,15 +30,16 @@ defmodule DravidiumSimulatorWeb.PageController do
     query_transactions = from(data in DravidiumSimulatorWeb.Transactions, select: %{sender: type(data.sender, :string), recepient: type(data.recepient, :string), amount: type(data.amount, :integer)})
     alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Transactions}
     query_result = Repo.all(query_transactions)
-    transactions_data = Enum.reduce(query_result, [], fn(line,transactions_data) ->
-      transactions_data ++ [[line.sender, line.amount]]
+    transactions_sender_data = Enum.reduce(query_result, [], fn(line,transactions_sender_data) ->
+      transactions_sender_data ++ [[line.sender, line.amount]]
+    end)
+    transactions_recepient_data = Enum.reduce(query_result, [], fn(line,transactions_recepient_data) ->
+      transactions_recepient_data ++ [[line.recepient, line.amount]]
     end)
     render conn, "transactions.html",
-      transaction_data: Poison.encode!(transactions_data)
-      #data: Poison.encode!([[174.0, 80.0, 1], [176.5, 82.3, 2], [180.3, 73.6, 3], [167.6, 74.1, 6], [188.0, 85.9, 2]])
-      # day_data: ElixirCharts.CryptoCompare.get_day_hist(),
-      # day_data_120: ElixirCharts.CryptoCompare.get_day_hist120(),
-      # day_data_30: ElixirCharts.CryptoCompare.get_day_hist30()
+      transaction_sender_data: Poison.encode!(transactions_sender_data),
+      transaction_recepient_data: Poison.encode!(transactions_recepient_data)
+
   end
 
   def mining(conn, _params) do

@@ -21,9 +21,35 @@ defmodule Transaction do
   end
 
   def complete_transaction(transaction) do
+    import Ecto.Query
     if(!transaction.completed) do
       Miner.withdraw_bitcoins_from_wallet(transaction.sender, transaction.amount)
       Miner.deposit_bitcoins_to_wallet(transaction.recepient, transaction.amount)
+      new_sender_entry = %DravidiumSimulatorWeb.Wallet{miner_id: Kernel.inspect(transaction.sender), amount: Miner.get_bitcoins(transaction.sender)}
+      new_recepient_entry = %DravidiumSimulatorWeb.Wallet{miner_id: Kernel.inspect(transaction.recepient), amount: Miner.get_bitcoins(transaction.recepient)}
+      alias DravidiumSimulator.{Repo, DravidiumSimulatorWeb.Wallet}
+      sender_hk = Kernel.inspect(transaction.sender)
+      recepient_hk = Kernel.inspect(transaction.recepient)
+      from(p in DravidiumSimulatorWeb.Wallet, where: p.miner_id == ^sender_hk)
+      |> Repo.delete_all()
+      Repo.insert(new_sender_entry)
+
+      from(p in DravidiumSimulatorWeb.Wallet, where: p.miner_id == ^recepient_hk)
+      |> Repo.delete_all()
+      Repo.insert(new_recepient_entry)
+
+
+      #old_sender_entry = Repo.get_by(DravidiumSimulatorWeb.Wallet, miner_id: Kernel.inspect(transaction.sender))
+      #from(p in DravidiumSimulatorWeb.Wallet, where: p.miner_id == Map.get(%{}, :a))
+      #|> Repo.delete_all()
+      # Repo.delete(miner_id: Kernel.inspect(transaction.sender)
+      #book = %{ old_sender_entry | amount: Miner.get_bitcoins(transaction.sender) }
+      #Repo.update(book)
+      #############
+      #changeset = DravidiumSimulatorWeb.Wallet.changeset(old_sender_entry, %{amount: Miner.get_bitcoins(transaction.sender)})
+      #Repo.update(new_sender_entry)
+      #%DravidiumSimulatorWeb.Wallet{miner_id: Kernel.inspect(transaction.sender)} |> Repo.delete
+      #############
       transaction = %{transaction | completed: true}
       {true, transaction}
     else

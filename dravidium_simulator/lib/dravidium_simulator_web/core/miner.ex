@@ -85,7 +85,8 @@ defmodule Miner do
     end
     {nonce, hash} = Util.proofOfWork(unconfirmed_transactions, previous_hash, leading_zeros, 0)
     block = %{block | previous_block_hash: previous_hash, timestamp: Util.get_epoch_time(), my_hash: hash, nonce: nonce, transaction_list: unconfirmed_transactions}
-    newAmount = wallet.amount + 10
+    #newAmount = wallet.amount + 10
+    newAmount = wallet.amount
     wallet = %{wallet | amount: newAmount}
     {:reply, block, [wallet, blockchain], :infinity}
   end

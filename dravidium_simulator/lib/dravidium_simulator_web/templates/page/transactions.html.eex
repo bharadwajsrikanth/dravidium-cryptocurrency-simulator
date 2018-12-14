@@ -23,8 +23,13 @@
                <br/>
                <div class="col-lg-12">
                   <h2>Sender vs Number of Bitcoins</h2>
-                  <%= raw Chartkick.bar_chart @transaction_data %>
+                  <%= raw Chartkick.column_chart @transaction_sender_data %>
                </div>
+               <div class="col-lg-12">
+                  <br/>
+                  <h2>Receiver vs Number of Bitcoins</h2>
+                  <%= raw Chartkick.column_chart @transaction_recepient_data %>
+            </div>
          </div>
    </div>
 </div>
